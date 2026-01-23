@@ -4,11 +4,12 @@ import type {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import { Platform, RefreshControl, StyleSheet, View } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import {
-  Gesture,
-  GestureDetector,
-  ScrollView,
+    Gesture,
+    GestureDetector,
+    ScrollView,
+    RefreshControl,
 } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import BodyItem from './components/BodyItem';
