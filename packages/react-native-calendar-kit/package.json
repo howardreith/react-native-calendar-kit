@@ -14,7 +14,7 @@
   },
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
+  "types": "src/index.tsx",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
@@ -129,13 +129,7 @@
     "output": "lib",
     "targets": [
       "commonjs",
-      "module",
-      [
-        "typescript",
-        {
-          "project": "tsconfig.build.json"
-        }
-      ]
+      "module"
     ]
   },
   "dependencies": {
