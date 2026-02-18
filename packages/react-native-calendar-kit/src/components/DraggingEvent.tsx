@@ -120,7 +120,7 @@ export const DraggingEvent: FC<DraggingEventProps> = ({
     return clampValues(columnIndex, 0, totalResources - 1);
   }, [totalResources, hourWidth]);
 
-  const internalDayIndex = useSharedValue(getDayIndex(dragStartUnix.value));
+  const internalDayIndex = useSharedValue(0);
 
   useAnimatedReaction(
     () => dragStartUnix.value,

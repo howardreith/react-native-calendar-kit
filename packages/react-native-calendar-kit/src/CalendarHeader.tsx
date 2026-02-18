@@ -1,9 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
+  useAnimatedReaction,
+  runOnJS,
   withTiming,
 } from 'react-native-reanimated';
 import CalendarListView from './components/CalendarListView';
@@ -162,6 +164,20 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   const headerContainerStyle = useAnimatedStyle(() => ({
     height: contentHeight.value,
   }));
+
+  const [visibleDateUnixValue, setVisibleDateUnixValue] = useState(
+      calendarData.visibleDatesArray[0] ?? calendarData.minDateUnix
+  );
+
+  useAnimatedReaction(
+      () => visibleDateUnixAnim.value,
+      (value, prev) => {
+        if (value !== prev) {
+          runOnJS(setVisibleDateUnixValue)(value);
+        }
+      },
+      [visibleDateUnixAnim]
+  );
 
   const value = useMemo<HeaderContextProps>(
     () => ({
@@ -327,7 +343,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
     (item: { items: ResourceItem[]; index: number }) => {
       if (renderHeaderItem) {
         return renderHeaderItem({
-          startUnix: visibleDateUnixAnim.value,
+          startUnix: visibleDateUnixValue,
           index: 0,
           extra: { resources: item.items },
         });
@@ -336,11 +352,11 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
       return (
         <ResourceHeaderItem
           resources={item.items}
-          startUnix={visibleDateUnixAnim.value}
+          startUnix={visibleDateUnixValue}
         />
       );
     },
-    [visibleDateUnixAnim, renderHeaderItem]
+      [renderHeaderItem, visibleDateUnixValue]
   );
 
   const height = useDerivedValue(() => {
